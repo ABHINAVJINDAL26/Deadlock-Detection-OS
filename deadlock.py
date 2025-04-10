@@ -9,15 +9,15 @@ import numpy as np
 import winsound
 
 class DeadlockDetectionApp:
+
     def __init__(self, master):
         self.master = master
-        # self.master.title("Deadlock Detection System")
         self.master.title("Smart Deadlock Detection & Prevention System: A Visual & Analytical Approach")
 
         self.num_processes = tk.IntVar()
         self.num_resources = tk.IntVar()
         self.theme_var = tk.StringVar(value="superhero")
-        self.mode = tk.StringVar(value="Detection")  # Toggle button variable
+        self.mode = tk.StringVar(value="Detection")
         self.style = tb.Style(theme=self.theme_var.get())
 
         self.create_widgets()
@@ -193,15 +193,17 @@ class DeadlockDetectionApp:
         fig, axs = plt.subplots(1, 2, figsize=(9, 4))
 
         axs[0].pie(alloc_sum, labels=[f'R{i}' for i in range(self.r)], autopct='%1.1f%%', startangle=90)
-        axs[0].set_title("Resource Allocation Pie Chart")
+        axs[0].set_title("Resource Allocation")
 
-        axs[1].bar([f'R{i}' for i in range(self.r)], alloc_sum, color='lightgreen')
-        axs[1].set_title("Resource Allocation Bar Chart")
-        axs[1].set_ylabel("Units Allocated")
+        axs[1].bar([f'R{i}' for i in range(self.r)], alloc_sum, color='skyblue')
+        axs[1].set_title("Allocated Units per Resource")
+        axs[1].set_ylabel("Units")
 
-        plt.tight_layout()
-        plt.show()
-
+        chart_window = tb.Toplevel(self.master)
+        chart_window.title("Resource Utilization Charts")
+        canvas = FigureCanvasTkAgg(fig, master=chart_window)
+        canvas.get_tk_widget().pack(fill='both', expand=True)
+        canvas.draw()
 
 if __name__ == "__main__":
     root = tb.Window(themename="superhero")
